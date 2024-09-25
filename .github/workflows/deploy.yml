@@ -21,14 +21,20 @@ jobs:
       with:
         node-version: ${{ env.NODE_VERSION }}  # Use environment variable for Node.js version
 
-    - name: Transfer code to server
-      run: |
-        scp -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
+    - name: Setup SSH
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        SSH_HOST: ${{ secrets.SSH_HOST }}
+        SSH_USER: ${{ secrets.SSH_USER }}
+      run: |
+        # Create SSH directory and setup key
+        mkdir -p ~/.ssh
+        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
 
     - name: Run Deployment Script
       run: |
-        ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'cd ${{ secrets.PROJECT_PATH }} && ./.scripts/deploy.sh'
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.PROJECT_PATH }} && ./.scripts/deploy.sh'
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
