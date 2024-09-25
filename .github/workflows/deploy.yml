@@ -37,7 +37,7 @@ jobs:
 
     - name: Transfer the code to server 
       run: | 
-        scp -i ~/.ssh/id_rsa -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
+        scp -i ~/.ssh/id_rsa -r ./* ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
     
     - name: Run deployment script on server
       run: | 
