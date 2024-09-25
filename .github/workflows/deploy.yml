@@ -14,21 +14,27 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3  # 'uses' instead of 'users'
+      uses: actions/checkout@v3
 
     - name: Setup Node.js
-      uses: actions/setup-node@v3  # 'uses' instead of 'users'
+      uses: actions/setup-node@v3
       with: 
         node-version: ${{ env.NODE_VERSION }}
     
+    - name: Add SSH key
+      run: |
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/nodejs-dev
+        chmod 600 ~/.ssh/nodejs-dev
+
+    - name: Add server to known hosts
+      run: |
+        mkdir -p ~/.ssh
+        ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
     - name: Transfer the code to server 
       run: | 
-        scp -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        scp -i ~/.ssh/nodejs-dev -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
     
     - name: Run deployment script on server
       run: | 
-        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash ${{ secrets.PROJECT_PATH }}/deploy.sh'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh -i ~/.ssh/nodejs-dev ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash ${{ secrets.PROJECT_PATH }}/deploy.sh'
