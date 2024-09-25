@@ -29,7 +29,7 @@ jobs:
 
     - name: Transfer the code to server 
       run: | 
-        rsync -avz --delete ./nodejs/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
+        rsync -avz ./nodejs/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
 
     - name: Run deployment script on server
       run: | 
