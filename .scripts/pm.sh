@@ -10,10 +10,10 @@ echo "New changes copied to server !"
 echo "Installing Dependencies..."
 npm install --yes
 
-echo "Creating Production Build..."
-npm run build
+# echo "Creating Production Build..."
+# npm run build
 
 echo "PM2 Reload"
-pm2 reload app1
+pm2 reload myapp
 
 echo "Deployment Finished!"
