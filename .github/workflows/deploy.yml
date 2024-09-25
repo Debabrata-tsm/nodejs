@@ -1,4 +1,4 @@
-name: Deploy to Server
+name: Fetch, Transfer, and Deploy
 
 on:
   push:
@@ -9,15 +9,26 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      NODE_VERSION: ${{ secrets.NODE_VERSION }}  # Node.js version from secrets
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Setup SSH Agent
-      uses: webfactory/ssh-agent@v0.5.3
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        node-version: ${{ env.NODE_VERSION }}  # Use environment variable for Node.js version
+
+    - name: Transfer code to server
+      run: |
+        scp -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Run Deployment Script
       run: |
         ssh -o StrictHostKeyChecking=no ${SSH_USER}@${SSH_HOST} 'cd ${{ secrets.PROJECT_PATH }} && ./.scripts/deploy.sh'
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
