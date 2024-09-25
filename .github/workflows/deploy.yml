@@ -21,6 +21,11 @@ jobs:
       with: 
         node-version: ${{ env.NODE_VERSION }}
     
+    - name: Create SSH directory
+      run: |
+        mkdir -p ~/.ssh
+        chmod 700 ~/.ssh
+
     - name: Add SSH key
       run: |
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
@@ -28,7 +33,6 @@ jobs:
 
     - name: Add server to known hosts
       run: |
-        mkdir -p ~/.ssh
         ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
 
     - name: Transfer the code to server 
