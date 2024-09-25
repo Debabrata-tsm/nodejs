@@ -10,25 +10,12 @@ PM2_APP_NAME=${PM2_APP_NAME:-"app1"}  # Define your PM2 app name
 # Navigate to the project directory
 cd $PROJECT_PATH || exit
 
-# Create ecosystem.config.js file
-sudo cat <<EOL > ecosystem.config.js
-module.exports = {
-  apps: [{
-    name: "$PM2_APP_NAME",
-    script: "./app.js",
-    env: {
-      PORT: 3005  # Define your port here
-    },
-  }]
-}
-EOL
 
 # Log Node.js version for reference
 node -v
 
 git pull origin main
 
-npm install pm2
 
 # Install project dependencies
 npm install --yes
