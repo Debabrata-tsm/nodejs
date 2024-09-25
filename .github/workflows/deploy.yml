@@ -22,4 +22,4 @@ jobs:
 
     - name: Run deployment script
       run: |
-        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd /path/to/your/project/.script && bash deploy.sh'
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.PROJECT_PATH }}/.script && bash deploy.sh'
