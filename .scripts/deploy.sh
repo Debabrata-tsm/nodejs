@@ -21,25 +21,25 @@ nvm use 16  # This uses the default version. You can specify a version like: nvm
 cd $PROJECT_PATH || exit
 
 # Log Node.js version for reference
-node -v
+/home/ubuntu/.nvm/versions/node/v16.19.0/bin/node -v
 
 git pull origin main
 
 # Install project dependencies
-npm install --yes
+/home/ubuntu/.nvm/versions/node/v16.19.0/bin/npm install --yes
 
 # Restart the app with PM2 or start it if not running using the ecosystem file
-pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
+/home/ubuntu/.nvm/versions/node/v16.19.0/bin/node pm2 restart ecosystem.config.js || /home/ubuntu/.nvm/versions/node/v16.19.0/bin/node pm2 start ecosystem.config.js
 
 # Configure PM2 to start on boot
-pm2 startup  # This generates the startup command for your system
+/home/ubuntu/.nvm/versions/node/v16.19.0/bin/node pm2 startup  # This generates the startup command for your system
 
 # Get the generated startup command and run it
 STARTUP_CMD=$(pm2 startup | grep 'sudo' | tail -1)
 eval $STARTUP_CMD
 
 # Save the current PM2 process list to be started after reboot
-pm2 save
+/home/ubuntu/.nvm/versions/node/v16.19.0/bin/node pm2 save
 
 # Optional: Log deployment time or output
 echo "Deployment completed at $(date)" >> deployment.log
