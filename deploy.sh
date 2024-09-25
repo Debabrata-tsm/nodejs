@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Set environment variables
-PROJECT_PATH=${PROJECT_PATH:-"/usr/share/nginx/html"}
+PROJECT_PATH=${PROJECT_PATH:-"/usr/share/nginx/node"}
 PM2_APP_NAME=${PM2_APP_NAME:-"app1"}
 NODE_VERSION=${NODE_VERSION:-"16.19.0"}  # Set default Node.js version if not provided
 
