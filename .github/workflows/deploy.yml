@@ -13,23 +13,22 @@ jobs:
       NODE_VERSION: ${{ secrets.NODE_VERSION }}  # Node.js version from secrets
 
     steps:
-    - name: Chekout code
-      users: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3  # 'uses' instead of 'users'
 
-    - name: setup nodejs
-      users: actions/setup.node@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3  # 'uses' instead of 'users'
       with: 
         node-version: ${{ env.NODE_VERSION }}
     
-    - name: transfer the code to server 
+    - name: Transfer the code to server 
       run: | 
         scp -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
       env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     
     - name: Run deployment script on server
       run: | 
         ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash ${{ secrets.PROJECT_PATH }}/deploy.sh'
-
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
