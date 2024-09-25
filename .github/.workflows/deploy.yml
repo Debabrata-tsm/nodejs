@@ -1,0 +1,35 @@
+name: Fetch, Transfer, and Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      NODE_VERSION: ${{ secrets.NODE_VERSION }}  # Node.js version from secrets
+
+    steps:
+    - name: Chekout code
+      users: actions/checkout@v3
+
+    - name: setup nodejs
+      users: actions/setup.node@v3
+      with: 
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: transfer the code to server 
+      run: | 
+        scp -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY}}
+    
+    - name: Run deployment script on server
+      run: | 
+        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash ${{ secrets.PROJECT_PATH }}/deploy.sh'
+
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
