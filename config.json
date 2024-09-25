@@ -1,0 +1,14 @@
+{
+	"log": true,
+	"port": 3000,
+	"url": "/",
+	"ssl": {
+		"use": false,
+		"key": "./ssl.key",
+		"cert": "./ssl.crt"	
+	},
+        "readline": {
+        	"use": true,
+		"prompt": "[--:--:--][CONSOLE] "
+        }
+}
