@@ -1,40 +1,46 @@
-name: Deploy Node.js Project
+name: Deploy
 
+# Trigger the workflow on push and
+# pull request events on the master branch
 on:
   push:
-    branches:
-      - main
+    branches: ["main"]
 
+
+# Authenticate to the the server via ssh
+# and run our deployment script
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+      - uses: actions/checkout@v3
+      - name: Deploy to Server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: "cd ~/project_folder_name && ./.scripts/deploy.sh"
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16.19.0'
 
-    - name: Install dependencies
-      run: npm install
 
-    - name: Setup SSH
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-        SSH_HOST: ${{ secrets.SSH_HOST }}
-        SSH_USER: ${{ secrets.SSH_USER }}
-      run: |
-        # Create SSH directory and setup key
-        mkdir -p ~/.ssh
-        echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
 
-    - name: Run Deployment Script
-      run: |
-        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.PROJECT_PATH }} && ./.scripts/deploy.sh'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+
+    # - name: Setup SSH
+    #   env:
+    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    #     SSH_HOST: ${{ secrets.SSH_HOST }}
+    #     SSH_USER: ${{ secrets.SSH_USER }}
+    #   run: |
+    #     # Create SSH directory and setup key
+    #     mkdir -p ~/.ssh
+    #     echo "${SSH_PRIVATE_KEY}" > ~/.ssh/id_rsa
+    #     chmod 600 ~/.ssh/id_rsa
+    #     ssh-keyscan -H "${SSH_HOST}" >> ~/.ssh/known_hosts
+
+    # - name: Run Deployment Script
+    #   run: |
+    #     ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.PROJECT_PATH }} && ./.scripts/deploy.sh'
+    #   env:
+    #     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
