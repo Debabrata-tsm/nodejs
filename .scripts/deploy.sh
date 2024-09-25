@@ -7,15 +7,21 @@ echo "Deployment started"
 PROJECT_PATH=${PROJECT_PATH:-"/usr/share/nginx/node"}
 PM2_APP_NAME=${PM2_APP_NAME:-"app1"}  # Define your PM2 app name
 
+# Load NVM
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Use the desired Node.js version
+nvm use node  # This uses the default version. You can specify a version like: nvm use 14
+
 # Navigate to the project directory
 cd $PROJECT_PATH || exit
-
 
 # Log Node.js version for reference
 node -v
 
 git pull origin main
-
 
 # Install project dependencies
 npm install --yes
