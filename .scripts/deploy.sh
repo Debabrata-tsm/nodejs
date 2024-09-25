@@ -21,7 +21,7 @@ PM2_APP_NAME=${PM2_APP_NAME:-"app1"}  # Define your PM2 app name
 cd $PROJECT_PATH || exit
 
 # Log Node.js version for reference
-/home/ubuntu/.nvm/versions/node/v16.19.0/bin/node -v
+node -v
 
 git pull origin main
 
