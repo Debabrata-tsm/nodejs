@@ -23,8 +23,8 @@ jobs:
     
     - name: Add SSH key
       run: |
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/nodejs-dev
-        chmod 600 ~/.ssh/nodejs-dev
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
 
     - name: Add server to known hosts
       run: |
@@ -33,8 +33,8 @@ jobs:
 
     - name: Transfer the code to server 
       run: | 
-        scp -i ~/.ssh/nodejs-dev -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
+        scp -i ~/.ssh/id_rsa -r ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.PROJECT_PATH }}
     
     - name: Run deployment script on server
       run: | 
-        ssh -i ~/.ssh/nodejs-dev ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash ${{ secrets.PROJECT_PATH }}/deploy.sh'
+        ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'bash ${{ secrets.PROJECT_PATH }}/deploy.sh'
