@@ -2,18 +2,11 @@
 
 # Set environment variables
 PROJECT_PATH=${PROJECT_PATH:-"/usr/share/nginx/node"}
-# PM2_APP_NAME=${PM2_APP_NAME:-"app1"}
-# NODE_VERSION=${NODE_VERSION:-"16.19.0"}  # Set default Node.js version if not provided
-
-# # Use NVM to switch to the correct Node.js version (assuming NVM is installed on the server)
-# source ~/.nvm/nvm.sh
-# nvm install $NODE_VERSION
-# nvm use $NODE_VERSION
+PM2_APP_NAME=${PM2_APP_NAME:-"app1"}  # Define your PM2 app name
 
 # Navigate to the project directory
 cd $PROJECT_PATH || exit
 
-# Create echosystemconfig file
 # Create ecosystem.config.js file
 cat <<EOL > ecosystem.config.js
 module.exports = {
@@ -21,18 +14,17 @@ module.exports = {
     name: "$PM2_APP_NAME",
     script: "./app.js",
     env: {
-      PORT: 3005  // Define your port here
+      PORT: 3005  # Define your port here
     },
   }]
 }
 EOL
 
+# Log Node.js version for reference
 node -v
 
-# Install dependencies
+# Install project dependencies
 npm install
-
-npm install pm2 
 
 # Restart the app with PM2 or start it if not running using the ecosystem file
 pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
