@@ -12,10 +12,10 @@ PM2_APP_NAME=${PM2_APP_NAME:-"app1"}  # Define your PM2 app name
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-source ~/.bashrc
+# source ~/.bashrc
 
 # Use the desired Node.js version
-nvm use 16  # This uses the default version. You can specify a version like: nvm use 14
+# nvm use 16  # This uses the default version. You can specify a version like: nvm use 14
 
 # Navigate to the project directory
 cd $PROJECT_PATH || exit
@@ -26,20 +26,20 @@ cd $PROJECT_PATH || exit
 git pull origin main
 
 # Install project dependencies
-/home/ubuntu/.nvm/versions/node/v16.19.0/bin/npm install --yes
+npm install --yes
 
 # Restart the app with PM2 or start it if not running using the ecosystem file
-/home/ubuntu/.nvm/versions/node/v16.19.0/bin/node pm2 restart ecosystem.config.js || /home/ubuntu/.nvm/versions/node/v16.19.0/bin/node pm2 start ecosystem.config.js
+pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
 
 # Configure PM2 to start on boot
-/home/ubuntu/.nvm/versions/node/v16.19.0/bin/node pm2 startup  # This generates the startup command for your system
+pm2 startup  # This generates the startup command for your system
 
 # Get the generated startup command and run it
 STARTUP_CMD=$(pm2 startup | grep 'sudo' | tail -1)
 eval $STARTUP_CMD
 
 # Save the current PM2 process list to be started after reboot
-/home/ubuntu/.nvm/versions/node/v16.19.0/bin/node pm2 save
+pm2 save
 
 # Optional: Log deployment time or output
 echo "Deployment completed at $(date)" >> deployment.log
