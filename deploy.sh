@@ -26,8 +26,12 @@ EOL
 # Log Node.js version for reference
 node -v
 
+git pull origin main
+
+npm install pm2
+
 # Install project dependencies
-npm install
+npm install --yes
 
 # Restart the app with PM2 or start it if not running using the ecosystem file
 pm2 restart ecosystem.config.js || pm2 start ecosystem.config.js
