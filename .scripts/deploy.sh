@@ -13,7 +13,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # Use the desired Node.js version
-nvm use node  # This uses the default version. You can specify a version like: nvm use 14
+nvm use 16  # This uses the default version. You can specify a version like: nvm use 14
 
 # Navigate to the project directory
 cd $PROJECT_PATH || exit
