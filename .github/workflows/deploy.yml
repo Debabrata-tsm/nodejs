@@ -24,4 +24,4 @@ jobs:
   
       - name: Run Deployment Script
         run: |
-          ssh -i ~/.ssh/id_rsa -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ secrets.PROJECT_PATH }} && bash ./.scripts/script.sh'
+          ssh -i ~/.ssh/id_rsa ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} 'cd ${{ screts.PROJECT_PATH }}/.script && bash script.sh'
