@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+echo "Deployment started"
+
 # Set environment variables
 PROJECT_PATH=${PROJECT_PATH:-"/usr/share/nginx/node"}
 PM2_APP_NAME=${PM2_APP_NAME:-"app1"}  # Define your PM2 app name
@@ -8,7 +11,7 @@ PM2_APP_NAME=${PM2_APP_NAME:-"app1"}  # Define your PM2 app name
 cd $PROJECT_PATH || exit
 
 # Create ecosystem.config.js file
-cat <<EOL > ecosystem.config.js
+sudo cat <<EOL > ecosystem.config.js
 module.exports = {
   apps: [{
     name: "$PM2_APP_NAME",
